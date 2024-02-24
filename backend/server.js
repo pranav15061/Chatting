@@ -7,13 +7,13 @@ import userRoutes from "./routes/userroutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import {app,server} from "./socket/socket.js";
-
+import path from "path";
 
 dotenv.config();
 // const app = express();
 
 const PORT = process.env.PORT || 5000;
-
+const __dirname=path.resolve();
 
 const corsOptions = {
   origin: 'http://localhost:3000', // Change this to the origin of your React app
@@ -25,6 +25,12 @@ app.use(cors(corsOptions));
 app.use("/", AuthRoutes);
 app.use("/messages", messageRoutes);
 app.use("/users",userRoutes);
+
+app.use(express.static(path.join(__dirname,"/frontend/dist")));
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 connect();
 server.listen(PORT, (req, res) => {
