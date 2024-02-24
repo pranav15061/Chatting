@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/usermodel.js";
-import generateTokenAndSetCookie from "../utils/generateToken.js";
+
+// import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const Signup = async (req, res) => {
   try {
@@ -31,23 +32,27 @@ export const Signup = async (req, res) => {
       profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
     });
 
+    let token;
     if (newUser) {
-       generateTokenAndSetCookie(newUser._id,res);
+      //  generateTokenAndSetCookie(newUser._id,res);
+
       await newUser.save();
+       token=await newUser.generateToken();
 
       res.status(201).json({
-        // _id: newUser._id,
-        // fullName: newUser.fullName,
-        // username: newUser.username,
-        // profilePic: newUser.profilePic,
-        data: newUser,
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        username: newUser.username,
+        profilePic: newUser.profilePic,
+        // data: newUser,
       });
-    } else {
-      return res.status(201).json({ msg: "Invalid data" });
+    } 
+    else {
+      return res.status(201).json({ error: "Invalid data" });
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ msg: "Internal Server error" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server error" });
   }
 };
 
@@ -59,23 +64,41 @@ export const Login = async(req, res) => {
         
         const exist=await User.findOne({username})
         if (!exist) {
-            return res.status(404).json({ msg: "Username Does not exists" });
+            return res.status(404).json({ error: "Username Does not exists" });
           }
 
-          const compare=await bcrypt.compare(password,exist.password);
+          const hashedPassword=await bcrypt.compare(password,exist.password);
 
-          if(!compare)
+          if(!hashedPassword)
           {
-            return res.status(400).json({ msg: "Incorrect Password" });
+            return res.status(400).json({ error: "Incorrect Credentials" });
           }
 
-          generateTokenAndSetCookie(exist._id,res); 
-           res.status(200).json({data:exist});
+          // const token=generateTokenAndSetCookie(exist._id,res); 
+
+          const token=await exist.generateToken();
+          // console.log(token);
+          // const token = await exist.generatetoken()
+          //  res.status(200).json({data:exist});
+
+          // console.log(token);
+          res.cookie("jwt", token, {
+            httpOnly: true, 
+            expires:new Date(Date.now()+25892000000)
+          });
+
+          res.status(200).json({
+            _id: exist._id,
+            fullName: exist.fullName,
+            username: exist.username,
+            profilePic: exist.profilePic,
+            token
+          });
         
     }
-    catch(err) {
-        console.log(err);
-        res.status(500).json({ msg: "Internal Server error" });
+    catch(error) {
+        console.log("Error in login controller", error.message);
+        res.status(500).json({ error: "Internal Server error" });
     }
 
 
