@@ -1,29 +1,23 @@
 import jwt from "jsonwebtoken";
 import User from "../models/usermodel.js";
 
-
-
-
 const protectRoute = async (req, res, next) => {
   try {
     // const token = req.cookies.jwt;
 
-	const token=req.header('Authorization');
-	
-	
+    const token = req.header("Authorization");
+
     if (!token) {
-		return res
+      return res
         .status(401)
         .json({ error: "Unauthorized - No Token Provided" });
     }
 
-
-
-	const jwttoken=token.replace("Bearer ","");
-	// console.log("Token from Pranav",jwttoken);
+    const jwttoken = token.replace("Bearer ", "");
+    // console.log("Token from Pranav",jwttoken);
 
     const decoded = jwt.verify(jwttoken, process.env.JWT_SECRET);
-	// console.log(decoded)
+    // console.log(decoded)
 
     if (!decoded) {
       return res.status(401).json({ error: "Unauthorized - Invalid Token" });
@@ -31,14 +25,14 @@ const protectRoute = async (req, res, next) => {
 
     const user = await User.findById(decoded.userId).select("-password");
 
-	// console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
     req.user = user;
-	req.token=token;
+    req.token = token;
 
     next();
   } catch (error) {

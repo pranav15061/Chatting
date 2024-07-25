@@ -38,6 +38,7 @@ export const Signup = async (req, res) => {
 
       await newUser.save();
        token=await newUser.generateToken();
+       
 
       res.status(201).json({
         _id: newUser._id,
@@ -45,6 +46,7 @@ export const Signup = async (req, res) => {
         username: newUser.username,
         profilePic: newUser.profilePic,
         // data: newUser,
+        token
       });
     } 
     else {
@@ -74,7 +76,7 @@ export const Login = async(req, res) => {
             return res.status(400).json({ error: "Incorrect Credentials" });
           }
 
-          // const token=generateTokenAndSetCookie(exist._id,res); 
+          // const token=generateTokenAndSetCookie(exist._id,res);
 
           const token=await exist.generateToken();
           // console.log(token);

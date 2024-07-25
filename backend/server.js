@@ -17,20 +17,26 @@ const __dirname=path.resolve();
 
 const corsOptions = {
   origin: 'http://localhost:3000', // Change this to the origin of your React app
+  credential:true,
 };
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
+
 app.use("/", AuthRoutes);
 app.use("/messages", messageRoutes);
 app.use("/users",userRoutes);
 
-app.use(express.static(path.join(__dirname,"/frontend/dist")));
+// app.use(express.static(path.join(__dirname,"/frontend/dist")));
 
-app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
+// app.get("*", (req, res) => {
+// 	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+// });
+
+app.get('/',(req,res)=>{
+    res.status(200).json({msg:"HII"});
+})
 
 connect();
 server.listen(PORT, (req, res) => {

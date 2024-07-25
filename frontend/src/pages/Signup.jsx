@@ -22,7 +22,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signup(inputs);
-    // console.log(inputs);
+
 
     setInputs({
       fullName: "",

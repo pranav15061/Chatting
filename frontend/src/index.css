@@ -58,3 +58,65 @@ body {
 		transform: translate3d(4px, 0, 0);
 	}
 }
+
+.pointer{
+	cursor: pointer;
+}
+
+/* Ensure the chat-bubble has a maximum width and text wrapping */
+.chat-bubble {
+	max-width: 100%; /* Or set a specific max width as needed */
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	white-space: pre-wrap; /* Preserve whitespace and handle long lines */
+	display: block; /* Ensure it's a block-level element */
+  }
+  
+  /* Add any other existing styles for chat-bubble */
+  .text-white {
+	color: white;
+  }
+  
+  .pb-2 {
+	padding-bottom: 0.5rem; /* Adjust padding as needed */
+  }
+  
+  /* Example for bubbleBgColor and shakeClass */
+  .bubbleBgColor {
+	background-color: #333; /* Example background color */
+  }
+  
+  .shakeClass {
+	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+  }
+  
+  @keyframes shake {
+	10%, 90% {
+	  transform: translate3d(-1px, 0, 0);
+	}
+	20%, 80% {
+	  transform: translate3d(2px, 0, 0);
+	}
+	30%, 50%, 70% {
+	  transform: translate3d(-4px, 0, 0);
+	}
+	40%, 60% {
+	  transform: translate3d(4px, 0, 0);
+	}
+  }
+  
+  /* Styles for the square-bordered-image */
+  .square-bordered-image {
+	width: 100px; /* Set width to maintain square shape */
+	height: 100px; /* Set height to maintain square shape */
+	object-fit: cover; /* Ensures the image covers the container without distortion */
+	border: 2px solid #ddd; /* Border color */
+	border-radius: 10px; /* Rounded corners */
+	padding: 5px; /* Optional padding inside the border */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for better visual appearance */
+  }
+  

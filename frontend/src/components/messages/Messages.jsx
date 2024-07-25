@@ -30,6 +30,8 @@ const Messages = () => {
             <Message  message={message} />
          </div>
         ))}
+
+        
       {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
 
       {!loading && messages.length === 0 && (

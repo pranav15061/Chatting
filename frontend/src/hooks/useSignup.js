@@ -32,7 +32,14 @@ const useSignup = () => {
                 return new Error(data.error)
             }
 
-            localStorage.setItem("chat-user",JSON.stringify(data));
+            // localStorage.setItem("chat-signup",JSON.stringify(data));
+
+            const token=data.token;
+
+			localStorage.setItem("chat-user",JSON.stringify(data));
+			setAuthUser(data);
+
+			localStorage.setItem("token",token);
             setAuthUser(data);
 
 

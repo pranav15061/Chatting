@@ -5,7 +5,6 @@ import { getRandomEmoji } from "../../utils/emojis";
 
 const Conversations = () => {
   const { loading, conversations } = useGetConversations();
-  console.log("Conversations:", conversations.filteredUsers);
 
   const converse = conversations.filteredUsers;
 
@@ -20,13 +19,10 @@ const Conversations = () => {
         />
       ))}
 
-      {loading ? (
-        <span className="loading loading-spinner mx-auto"></span>
-      ) : null}
+      {loading && <span className="loading loading-spinner mx-auto"></span>}
     </div>
 
-    // <>
-    // </>
+    
   );
 };
 

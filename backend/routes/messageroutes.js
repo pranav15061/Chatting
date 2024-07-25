@@ -9,5 +9,7 @@ const router=express.Router();
 router.get('/:id',protectRoute,getMessages);
 router.post('/send/:id',protectRoute,sendMessage);
 
+// router.get('/getlastMessage/:senderId/:receiverId',getlastMessage);
+
 
 export default router;

@@ -1,13 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { TiMessages } from "react-icons/ti";
 import useConversation from "../../zustand/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
+import Icon from "./Icon";
+
+import { Box, InputBase } from "@mui/material";
+import { AttachFile, EmojiEmotionsOutlined, Mic } from "@mui/icons-material";
+import styled from "@emotion/styled";
+import { BsFillImageFill } from "react-icons/bs";
+
+
+
+const ClipIcon = styled(AttachFile)`
+  transform: rotate(40deg);
+`;
+
 
 const MessageContainer = () => {
 
   const { selectedConversation, setSelectedConversation } = useConversation();
+
+
+  const [result, setResult] = useState("");
 
   useEffect(() => {
 		// cleanup function (unmounts)
@@ -27,7 +43,10 @@ const MessageContainer = () => {
           </div>
 
           <Messages />
-          <MessageInput />
+          {/* <Icon setResult={setResult} style={{ marginTop: '20px' }}/>   */}
+          <MessageInput result={result} setResult={setResult} />
+          {/* <MessageInput  /> */}
+
         </>
       )}
     </div>

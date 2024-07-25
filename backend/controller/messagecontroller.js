@@ -1,3 +1,4 @@
+import { log } from "util";
 import Conversation from "../models/conversationmodel.js";
 import Message from "../models/messagemodel.js";
 import { getReceiverSocketId,io } from "../socket/socket.js";
@@ -14,8 +15,10 @@ export const sendMessage = async (req, res) => {
 
     if (!conversation) {
       conversation = await Conversation.create({
-        participants: [senderId, receiverId],
+        participants: [senderId, receiverId]
       });
+      await conversation.save();
+
     }
 
     const newMessage = new Message({
@@ -34,11 +37,18 @@ export const sendMessage = async (req, res) => {
     // this will run in parallel
     await Promise.all([conversation.save(), newMessage.save()]);
 
+
+      
+
+
+
    // SOCKET IO FUNCTIONALITY WILL GO HERE
 		const receiverSocketId = getReceiverSocketId(receiverId);
+    
 		if (receiverSocketId) {
 			// io.to(<socket_id>).emit() used to send events to specific client
 			io.to(receiverSocketId).emit("newMessage", newMessage);
+      // io.emit("newMessage", newMessage);
 		}
 
 
@@ -70,3 +80,40 @@ export const getMessages = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
+// // export const getlastMessage =async(req,res)=>{
+ 
+// //    try{
+
+   
+// //     const {senderId}=req.params; 
+// //     const {receiverId}=req.params;
+
+
+// //       console.log(senderId,receiverId);
+
+// //     let conversation = await Conversation.findOne({
+// //         participants: { $all: [senderId, receiverId] },
+// //       });
+
+// //       if (!conversation) {
+// //         return res.status(200).json([]);
+// //       }
+
+// //       res.status(200).json(conversation);
+// //    }
+// //    catch(error)
+// //    {
+// //     console.log("Error in getlastMessage controller: ", error.message);
+// //     res.status(500).json({ error: "Internal server error" });
+
+// //    }
+
+
+
+
+
+
+// }
